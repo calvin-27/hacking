@@ -1,171 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Hacker Access Terminal</title>
-  <style>
-    body {
-      background-color: black;
-      color: #00FF00;
-      font-family: 'Courier New', Courier, monospace;
-      padding: 20px;
-    }
-
-    h1 {
-      text-align: center;
-      color: #00FF00;
-      text-shadow: 0 0 5px #00FF00;
-    }
-
-    .form-container {
-      border: 2px solid #00FF00;
-      padding: 20px;
-      width: 400px;
-      margin: auto;
-      background-color: #000000c0;
-      box-shadow: 0 0 10px #00FF00;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 15px;
-      background-color: black;
-      border: 1px solid #00FF00;
-      color: #00FF00;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #00FF00;
-      border: none;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-      text-transform: uppercase;
-    }
-
-    button:hover {
-      background-color: #00cc00;
-    }
-
-    .terminal {
-      margin-top: 30px;
-      background: black;
-      border: 1px solid #00FF00;
-      padding: 10px;
-      height: 250px;
-      overflow-y: auto;
-      font-size: 14px;
-      box-shadow: inset 0 0 10px #00FF00;
-    }
-
-    .status {
-      text-align: center;
-      font-weight: bold;
-      color: #00FF00;
-      margin-top: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <canvas id="matrix"></canvas>
 
-  <h1>💻 Hacker Access Terminal</h1>
+  <div class="container">
+    <div class="form-box">
+      <h2>💻 Hacker Access Terminal</h2>
+      <form id="accessForm">
+        <label>User ID:</label>
+        <input type="text" id="userId" placeholder="Enter your ID..." required />
 
-  <div class="form-container">
-    <label for="userId">User ID:</label>
-    <input type="text" id="userId" placeholder="Enter your ID...">
+        <label>Deposit Amount:</label>
+        <input type="text" id="deposit" placeholder="Contoh: Rp 100.000" required />
 
-    <label for="deposit">Deposit Amount:</label>
-    <input type="text" id="deposit" placeholder="Contoh: Rp 100.000" oninput="formatRupiah(this)">
+        <label>Select Game:</label>
+        <select id="game">
+          <option value="mj12">Mahjong ways 1&2</option>
+          <option value="gates">Gates of Olympus</option>
+        </select>
 
-    <label for="games">Select Game:</label>
-    <select id="games">
-      <option>Mahjong ways 1&2</option>
-      <option>Gates of Olympus</option>
-      <option>sweet bonanza</option>
-      <option>Starlight Princess</option>
-    </select>
-
-    <button onclick="submitForm()">Submit</button>
-    <div class="status" id="status">Status: Standby</div>
+        <button type="submit">SUBMIT</button>
+      </form>
+      <p id="status">Status: Standby</p>
+      <p class="footer">Dibuat oleh: CAPT-KEN.dev | Versi Hacker UI 2025</p>
+    </div>
   </div>
 
-  <div class="terminal" id="terminal">
-    > System initialized...<br>
-    > Awaiting user input...
+  <div class="terminal">
+    <p id="terminal-log">> System initialized...<br>> Awaiting user input...</p>
   </div>
 
-  <script>
-    function formatRupiah(el) {
-      let angka = el.value.replace(/[^\d]/g, "");
-      let format = new Intl.NumberFormat('id-ID').format(angka);
-      el.value = angka ? "Rp " + format : "";
-    }
-
-    let hackingLogs = [
-      "Activating terminal...",
-      "Connecting to remote server...",
-      "Bypassing firewall...",
-      "Accessing admin panel...",
-      "Decrypting credentials...",
-      "Injecting payload...",
-      "Uploading data...",
-      "Modifying records...",
-      "Transfer complete.",
-      "Cleaning logs...",
-      "Disconnecting...",
-      "Process complete ✅"
-    ];
-
-    let withdrawUsers = ["DewaSlot1", "Mafia88", "ZeusX", "JPHunter", "PlayerID007", "LuckyKing", "QueenSlot"];
-
-    function submitForm() {
-      const userId = document.getElementById("userId").value;
-      const deposit = document.getElementById("deposit").value;
-      const game = document.getElementById("games").value;
-      const terminal = document.getElementById("terminal");
-      const status = document.getElementById("status");
-
-      terminal.innerHTML += `<br><br>> Game: ${game} | Deposit: ${deposit}`;
-      terminal.innerHTML += `<br>> Activating terminal...`;
-      status.textContent = "Status: Aktif 🔓";
-
-      let i = 0;
-      const interval = setInterval(() => {
-        if (i < hackingLogs.length) {
-          terminal.innerHTML += `<br>> ${hackingLogs[i++]}`;
-          terminal.scrollTop = terminal.scrollHeight;
-        } else {
-          clearInterval(interval);
-          status.textContent = "Status: Selesai ✅";
-
-          // Start fake withdraw log
-          setInterval(() => {
-            randomWithdrawLog();
-          }, 5000); // tiap 5 detik
-        }
-      }, 700);
-    }
-
-    function randomWithdrawLog() {
-      const terminal = document.getElementById("terminal");
-      const user = withdrawUsers[Math.floor(Math.random() * withdrawUsers.length)];
-      const amount = Math.floor(Math.random() * 900000) + 100000; // 100k - 1jt
-      const formatted = "Rp " + amount.toLocaleString("id-ID");
-      const time = new Date().toLocaleTimeString("id-ID");
-
-      terminal.innerHTML += `<br>> [${time}] [Withdraw] ${user} berhasil withdraw sebesar ${formatted}`;
-      terminal.scrollTop = terminal.scrollHeight;
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
